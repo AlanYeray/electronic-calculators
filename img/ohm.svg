@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="500" height="400" viewBox="0 0 500 400">
+
+  <rect width="500" height="400" fill="#0d0d1a" rx="8"/>
+
+  <!-- ── Triángulo principal ── -->
+  <polygon points="250,40 88,290 412,290"
+           stroke="#00d4ff" stroke-width="2.5"
+           fill="none" stroke-linejoin="round"/>
+
+  <!-- Línea horizontal: divide V de (I · R) -->
+  <line x1="169" y1="165" x2="331" y2="165"
+        stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Línea vertical: divide I de R -->
+  <line x1="250" y1="165" x2="250" y2="290"
+        stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- ── Letras dentro del triángulo ── -->
+  <text x="250" y="148" text-anchor="middle"
+        fill="#00d4ff" font-family="monospace" font-size="52" font-weight="bold">V</text>
+
+  <text x="168" y="258" text-anchor="middle"
+        fill="#00d4ff" font-family="monospace" font-size="52" font-weight="bold">I</text>
+
+  <text x="332" y="258" text-anchor="middle"
+        fill="#00d4ff" font-family="monospace" font-size="52" font-weight="bold">R</text>
+
+  <!-- ── Fórmulas debajo del triángulo ── -->
+  <g fill="#00d4ff" font-family="monospace" font-size="17">
+    <text x="80"  y="322">V = I × R</text>
+    <text x="80"  y="348">I = V / R</text>
+    <text x="290" y="322">R = V / I</text>
+    <text x="290" y="348">P = V × I</text>
+  </g>
+
+  <!-- Unidades -->
+  <text x="250" y="385" text-anchor="middle"
+        fill="#3a5570" font-family="monospace" font-size="13">
+    V (Volts)  ·  I (Amperes)  ·  R (Ohms)  ·  P (Watts)
+  </text>
+</svg>

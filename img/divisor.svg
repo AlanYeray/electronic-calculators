@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="600" height="360" viewBox="0 0 600 360">
+
+  <!-- Fondo que coincide con .circuit-diagram -->
+  <rect width="600" height="360" fill="#0d0d1a" rx="8"/>
+
+  <g stroke="#00d4ff" stroke-width="2.5"
+     fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- ── Fuente de voltaje (círculo) ── -->
+    <circle cx="80" cy="170" r="34"/>
+
+    <!-- Hilo + (fuente → esquina superior izquierda → R1) -->
+    <line x1="80"  y1="136" x2="80"  y2="68"/>
+    <line x1="80"  y1="68"  x2="178" y2="68"/>
+
+    <!-- R1 (rectángulo horizontal) -->
+    <rect x="178" y="52" width="120" height="32" rx="5"/>
+
+    <!-- Hilo R1 → nodo central -->
+    <line x1="298" y1="68" x2="418" y2="68"/>
+
+    <!-- Hilo nodo → Vout (derecha) -->
+    <line x1="418" y1="68" x2="530" y2="68"/>
+
+    <!-- Hilo nodo → R2 (baja) -->
+    <line x1="418" y1="68"  x2="418" y2="120"/>
+
+    <!-- R2 (rectángulo vertical) -->
+    <rect x="402" y="120" width="32" height="104" rx="5"/>
+
+    <!-- Hilo R2 → bus inferior -->
+    <line x1="418" y1="224" x2="418" y2="292"/>
+
+    <!-- Hilo − (fuente → bus inferior) -->
+    <line x1="80"  y1="204" x2="80"  y2="292"/>
+
+    <!-- Bus GND horizontal -->
+    <line x1="80"  y1="292" x2="418" y2="292"/>
+
+    <!-- Bajada al símbolo GND (centro del bus) -->
+    <line x1="249" y1="292" x2="249" y2="306"/>
+
+    <!-- ── Símbolo GND: 3 barras decrecientes ── -->
+    <line x1="221" y1="306" x2="277" y2="306"/>   <!-- barra 1 – 56 px -->
+    <line x1="231" y1="320" x2="267" y2="320"/>   <!-- barra 2 – 36 px -->
+    <line x1="241" y1="334" x2="257" y2="334"/>   <!-- barra 3 – 16 px -->
+
+  </g>
+
+  <!-- Punto de unión (junction) en el nodo central -->
+  <circle cx="418" cy="68" r="6" fill="#00d4ff"/>
+
+  <!-- ── Etiquetas ── -->
+  <!-- Vin dentro del círculo -->
+  <text x="80" y="174" text-anchor="middle"
+        fill="#00d4ff" font-family="monospace" font-size="16" font-weight="bold">Vin</text>
+
+  <!-- R1 encima del rectángulo -->
+  <text x="238" y="46" text-anchor="middle"
+        fill="#00d4ff" font-family="monospace" font-size="15" font-weight="bold">R1</text>
+
+  <!-- R2 a la derecha del rectángulo -->
+  <text x="442" y="176"
+        fill="#00d4ff" font-family="monospace" font-size="15" font-weight="bold">R2</text>
+
+  <!-- Vout a la derecha -->
+  <text x="536" y="73"
+        fill="#00d4ff" font-family="monospace" font-size="15" font-weight="bold">Vout</text>
+
+  <!-- Fórmula al pie -->
+  <text x="300" y="355" text-anchor="middle"
+        fill="#5a7898" font-family="monospace" font-size="14">
+    Vout = Vin × R2 / (R1 + R2)
+  </text>
+</svg>

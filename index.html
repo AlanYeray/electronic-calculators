@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ElectroCalc - Calculadoras de Electrónica en Español</title>
+  <meta name="description" content="Calculadoras gratuitas de electrónica: divisor de voltaje, ley de Ohm y resistencia para LED. Con explicaciones en español."/>
+  <meta name="keywords" content="calculadora electrónica, divisor de voltaje, ley de ohm, resistencia led, electrónica en español"/>
+  <meta name="author" content="ElectroCalc"/>
+  <meta property="og:title" content="ElectroCalc - Calculadoras de Electrónica en Español"/>
+  <meta property="og:description" content="Calculadoras gratuitas de electrónica con explicaciones en español."/>
+  <meta property="og:type" content="website"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">Electro<span>Calc</span></a>
+    <ul class="nav-links">
+      <li><a href="#divisor">Divisor de Voltaje</a></li>
+      <li><a href="#ohm">Ley de Ohm</a></li>
+      <li><a href="#led">Resistencia LED</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- MAIN LAYOUT -->
+<div class="page-wrapper">
+  <main>
+
+    <!-- ============================================================
+         CALCULADORA 1: DIVISOR DE VOLTAJE
+         ============================================================ -->
+    <section class="calc-section" id="divisor">
+      <h2>⚡ Divisor de Voltaje</h2>
+      <p class="desc">
+        Calcula el voltaje de salida de un circuito divisor resistivo. Útil para adaptar niveles de señal,
+        polarizar transistores y alimentar sensores con tensiones reducidas.
+      </p>
+
+      <div class="form-group">
+        <label for="div-vin">Voltaje de entrada (Vin)</label>
+        <div class="input-row">
+          <input type="number" id="div-vin" placeholder="ej. 12" min="0" step="any"/>
+          <select id="div-vin-unit" style="width:70px">
+            <option value="1">V</option>
+            <option value="0.001">mV</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="div-r1">Resistencia R1</label>
+        <div class="input-row">
+          <input type="number" id="div-r1" placeholder="ej. 10" min="0" step="any"/>
+          <select id="div-r1-unit">
+            <option value="1">Ω</option>
+            <option value="1000">kΩ</option>
+            <option value="1000000">MΩ</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="div-r2">Resistencia R2</label>
+        <div class="input-row">
+          <input type="number" id="div-r2" placeholder="ej. 5" min="0" step="any"/>
+          <select id="div-r2-unit">
+            <option value="1">Ω</option>
+            <option value="1000">kΩ</option>
+            <option value="1000000">MΩ</option>
+          </select>
+        </div>
+      </div>
+
+      <span class="error-msg" id="div-error"></span>
+      <button class="btn-calc" onclick="calcDivisor()">Calcular</button>
+
+      <div class="result-box" id="div-result">
+        <div class="result-main" id="div-vout"></div>
+        <div class="result-sub" id="div-corriente"></div>
+        <div class="result-explain" id="div-explain"></div>
+      </div>
+
+      <div class="circuit-diagram">
+        <img src="img/divisor.svg" alt="Diagrama divisor de voltaje" loading="lazy"/>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CALCULADORA 2: LEY DE OHM
+         ============================================================ -->
+    <section class="calc-section" id="ohm">
+      <h2>🔌 Ley de Ohm</h2>
+      <p class="desc">
+        Calcula Voltaje, Corriente, Resistencia o Potencia a partir de dos valores conocidos.
+        La base de cualquier análisis de circuitos eléctricos.
+      </p>
+
+      <p style="font-size:0.85rem;color:#7080a0;margin-bottom:0.5rem">¿Qué quieres calcular?</p>
+      <div class="calc-what" id="ohm-what">
+        <button class="calc-what-btn active" data-calc="V" onclick="setOhmCalc('V',this)">Voltaje (V)</button>
+        <button class="calc-what-btn" data-calc="I" onclick="setOhmCalc('I',this)">Corriente (I)</button>
+        <button class="calc-what-btn" data-calc="R" onclick="setOhmCalc('R',this)">Resistencia (R)</button>
+        <button class="calc-what-btn" data-calc="P" onclick="setOhmCalc('P',this)">Potencia (P)</button>
+      </div>
+
+      <!-- Inputs dinámicos según lo que se quiere calcular -->
+      <div id="ohm-inputs">
+        <!-- Renderizado por JS -->
+      </div>
+
+      <span class="error-msg" id="ohm-error"></span>
+      <button class="btn-calc" onclick="calcOhm()">Calcular</button>
+
+      <div class="result-box" id="ohm-result">
+        <div class="result-main" id="ohm-main"></div>
+        <div class="result-grid" id="ohm-grid"></div>
+      </div>
+
+      <div class="circuit-diagram">
+        <img src="img/ohm.svg" alt="Triángulo de la Ley de Ohm" loading="lazy"/>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CALCULADORA 3: RESISTENCIA PARA LED
+         ============================================================ -->
+    <section class="calc-section" id="led">
+      <h2>💡 Resistencia para LED</h2>
+      <p class="desc">
+        Calcula el valor correcto de la resistencia limitadora de corriente para tu LED.
+        Protege tu LED de quemarse y asegura el brillo óptimo.
+      </p>
+
+      <div class="form-group">
+        <label for="led-vcc">Voltaje de alimentación (Vcc)</label>
+        <div class="input-row">
+          <input type="number" id="led-vcc" placeholder="ej. 5" min="0" step="any"/>
+          <span style="padding:0.6rem 0.5rem;color:#7080a0">V</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="led-vf">Voltaje forward del LED (Vf)</label>
+        <p style="font-size:0.8rem;color:#6070a0;margin-bottom:0.4rem">Valores típicos:</p>
+        <div class="led-presets">
+          <button class="led-preset-btn" onclick="setVf(2.0)" style="color:#ff6060;border-color:#ff6060">🔴 Rojo 2.0V</button>
+          <button class="led-preset-btn" onclick="setVf(2.2)" style="color:#60ff60;border-color:#60ff60">🟢 Verde 2.2V</button>
+          <button class="led-preset-btn" onclick="setVf(3.2)" style="color:#6060ff;border-color:#6060ff">🔵 Azul 3.2V</button>
+          <button class="led-preset-btn" onclick="setVf(3.4)" style="color:#ffffff;border-color:#ffffff">⚪ Blanco 3.4V</button>
+        </div>
+        <div class="input-row">
+          <input type="number" id="led-vf" placeholder="ej. 2.0" min="0" step="0.1"/>
+          <span style="padding:0.6rem 0.5rem;color:#7080a0">V</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="led-if">Corriente deseada (If)</label>
+        <div class="input-row">
+          <input type="number" id="led-if" value="20" min="0" step="1"/>
+          <span style="padding:0.6rem 0.5rem;color:#7080a0">mA</span>
+        </div>
+      </div>
+
+      <span class="error-msg" id="led-error"></span>
+      <div class="warn-msg" id="led-warn-if">⚠️ Corriente &gt;30mA puede dañar el LED. Usa un valor de 20mA para mayor seguridad.</div>
+      <button class="btn-calc" onclick="calcLed()">Calcular</button>
+
+      <div class="result-box" id="led-result">
+        <div class="result-main" id="led-r-exacta"></div>
+        <div class="result-sub" id="led-r-e24"></div>
+        <div class="result-sub" id="led-potencia"></div>
+        <div class="warn-msg" id="led-warn-pot" style="display:none;margin-top:0.5rem">
+          ⚠️ La potencia supera 250mW. Usa una resistencia de 0.5W o mayor.
+        </div>
+        <div class="result-explain" id="led-explain"></div>
+      </div>
+
+      <div class="circuit-diagram">
+        <img src="img/led.svg" alt="Circuito LED con resistencia" loading="lazy"/>
+      </div>
+    </section>
+
+    <!-- AdSense bottom -->
+    <div class="bottom-ad">
+      <!-- AdSense banner aquí -->
+      <p>[ Espacio publicitario ]</p>
+      <p style="font-size:0.7rem;margin-top:0.3rem">AdSense banner — 728×90</p>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <!-- AdSense banner aquí -->
+    <div class="adsense-placeholder">
+      <!-- AdSense banner aquí -->
+      <p>[ Publicidad ]</p>
+      <p style="font-size:0.7rem;margin-top:0.3rem">AdSense — 260×600</p>
+    </div>
+    <div class="adsense-placeholder" style="margin-top:1rem">
+      <!-- AdSense banner aquí -->
+      <p>[ Publicidad ]</p>
+      <p style="font-size:0.7rem;margin-top:0.3rem">AdSense — 260×250</p>
+    </div>
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>ElectroCalc &mdash; Calculadoras de Electrónica en Español &mdash; Hecho en Durango. 🇲🇽</p>
+
+</footer>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+'use strict';
+
+/* ---------------------------------------------------------------
+   Helpers
+--------------------------------------------------------------- */
+function fmt(n, decimals = 3) {
+  if (Math.abs(n) >= 1e6) return (n / 1e6).toPrecision(4) + ' M';
+  if (Math.abs(n) >= 1e3) return (n / 1e3).toPrecision(4) + ' k';
+  return parseFloat(n.toPrecision(decimals)).toString();
+}
+
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function clearError(id) {
+  const el = document.getElementById(id);
+  el.style.display = 'none';
+}
+
+function showResult(id) {
+  document.getElementById(id).classList.add('visible');
+}
+
+function hideResult(id) {
+  document.getElementById(id).classList.remove('visible');
+}
+
+function getPositive(id, unitId) {
+  const val = parseFloat(document.getElementById(id).value);
+  const unit = unitId ? parseFloat(document.getElementById(unitId).value) : 1;
+  if (isNaN(val) || val <= 0) return null;
+  return val * unit;
+}
+
+/* ---------------------------------------------------------------
+   E24 Series
+--------------------------------------------------------------- */
+const E24 = [1.0,1.1,1.2,1.3,1.5,1.6,1.8,2.0,2.2,2.4,2.7,3.0,
+             3.3,3.6,3.9,4.3,4.7,5.1,5.6,6.2,6.8,7.5,8.2,9.1];
+
+function nearestE24(ohms) {
+  if (ohms <= 0) return { val: 0, label: '0Ω' };
+  const exp = Math.floor(Math.log10(ohms));
+  const mantissa = ohms / Math.pow(10, exp);
+  let best = E24[0], bestDiff = Infinity;
+  for (const v of E24) {
+    const d = Math.abs(v - mantissa);
+    if (d < bestDiff) { bestDiff = d; best = v; }
+  }
+  const result = best * Math.pow(10, exp);
+  return { val: result, label: fmtOhm(result) };
+}
+
+function fmtOhm(r) {
+  if (r >= 1e6) return (r / 1e6).toPrecision(3) + ' MΩ';
+  if (r >= 1e3) return (r / 1e3).toPrecision(3) + ' kΩ';
+  return r.toPrecision(3) + ' Ω';
+}
+
+/* ---------------------------------------------------------------
+   Calculadora 1: Divisor de Voltaje
+--------------------------------------------------------------- */
+function calcDivisor() {
+  clearError('div-error');
+  hideResult('div-result');
+
+  const vin = getPositive('div-vin', 'div-vin-unit');
+  const r1  = getPositive('div-r1',  'div-r1-unit');
+  const r2  = getPositive('div-r2',  'div-r2-unit');
+
+  if (!vin) return showError('div-error', 'Ingresa un voltaje de entrada mayor a 0.');
+  if (!r1)  return showError('div-error', 'Ingresa un valor positivo para R1.');
+  if (!r2)  return showError('div-error', 'Ingresa un valor positivo para R2.');
+
+  const vout = vin * (r2 / (r1 + r2));
+  const corriente = vin / (r1 + r2); // Amperes
+  const corriente_mA = corriente * 1000;
+  const pct = ((r2 / (r1 + r2)) * 100).toFixed(1);
+
+  document.getElementById('div-vout').textContent     = `Vout = ${vout.toPrecision(4)} V`;
+  document.getElementById('div-corriente').textContent = `Corriente en el divisor: ${corriente_mA.toPrecision(4)} mA`;
+  document.getElementById('div-explain').innerHTML =
+    `R2 (${fmtOhm(r2)}) representa el <strong>${pct}%</strong> de la resistencia total ` +
+    `(${fmtOhm(r1 + r2)}), por eso Vout es el ${pct}% de Vin.<br>` +
+    `<span style="color:#7080a0;font-size:0.8rem">Potencia disipada total: ${(vin * corriente * 1000).toPrecision(3)} mW</span>`;
+
+  showResult('div-result');
+}
+
+/* ---------------------------------------------------------------
+   Calculadora 2: Ley de Ohm
+--------------------------------------------------------------- */
+let ohmCalc = 'V';
+
+const ohmInputDefs = {
+  V: [
+    { id:'ohm-i', label:'Corriente (I)', unit:'A',  placeholder:'ej. 0.02' },
+    { id:'ohm-r', label:'Resistencia (R)', unit:'Ω', placeholder:'ej. 220' }
+  ],
+  I: [
+    { id:'ohm-v', label:'Voltaje (V)', unit:'V',  placeholder:'ej. 5' },
+    { id:'ohm-r', label:'Resistencia (R)', unit:'Ω', placeholder:'ej. 220' }
+  ],
+  R: [
+    { id:'ohm-v', label:'Voltaje (V)', unit:'V', placeholder:'ej. 5' },
+    { id:'ohm-i', label:'Corriente (I)', unit:'A', placeholder:'ej. 0.02' }
+  ],
+  P: [
+    { id:'ohm-v', label:'Voltaje (V)', unit:'V', placeholder:'ej. 5' },
+    { id:'ohm-i', label:'Corriente (I)', unit:'A', placeholder:'ej. 0.02' }
+  ]
+};
+
+function renderOhmInputs() {
+  const container = document.getElementById('ohm-inputs');
+  const defs = ohmInputDefs[ohmCalc];
+  container.innerHTML = defs.map(d => `
+    <div class="form-group">
+      <label for="${d.id}">${d.label}</label>
+      <div class="input-row">
+        <input type="number" id="${d.id}" placeholder="${d.placeholder}" min="0" step="any"/>
+        <span style="padding:0.6rem 0.5rem;color:#7080a0">${d.unit}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setOhmCalc(calc, btn) {
+  ohmCalc = calc;
+  document.querySelectorAll('.calc-what-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderOhmInputs();
+  clearError('ohm-error');
+  hideResult('ohm-result');
+}
+
+function getOhmVal(id) {
+  const el = document.getElementById(id);
+  if (!el) return null;
+  const v = parseFloat(el.value);
+  return (isNaN(v) || v < 0) ? null : v;
+}
+
+function calcOhm() {
+  clearError('ohm-error');
+  hideResult('ohm-result');
+
+  let V, I, R, P;
+
+  if (ohmCalc === 'V') {
+    I = getOhmVal('ohm-i');
+    R = getOhmVal('ohm-r');
+    if (I === null) return showError('ohm-error', 'Ingresa la corriente (I).');
+    if (R === null) return showError('ohm-error', 'Ingresa la resistencia (R).');
+    if (I === 0 && R === 0) return showError('ohm-error', 'I y R no pueden ser ambos cero.');
+    V = I * R; P = V * I;
+  } else if (ohmCalc === 'I') {
+    V = getOhmVal('ohm-v');
+    R = getOhmVal('ohm-r');
+    if (V === null) return showError('ohm-error', 'Ingresa el voltaje (V).');
+    if (R === null) return showError('ohm-error', 'Ingresa la resistencia (R).');
+    if (R === 0) return showError('ohm-error', 'La resistencia no puede ser cero.');
+    I = V / R; P = V * I;
+  } else if (ohmCalc === 'R') {
+    V = getOhmVal('ohm-v');
+    I = getOhmVal('ohm-i');
+    if (V === null) return showError('ohm-error', 'Ingresa el voltaje (V).');
+    if (I === null) return showError('ohm-error', 'Ingresa la corriente (I).');
+    if (I === 0) return showError('ohm-error', 'La corriente no puede ser cero.');
+    R = V / I; P = V * I;
+  } else { // P
+    V = getOhmVal('ohm-v');
+    I = getOhmVal('ohm-i');
+    if (V === null) return showError('ohm-error', 'Ingresa el voltaje (V).');
+    if (I === null) return showError('ohm-error', 'Ingresa la corriente (I).');
+    P = V * I;
+    R = (I !== 0) ? V / I : null;
+  }
+
+  const labels = { V: 'Voltaje', I: 'Corriente', R: 'Resistencia', P: 'Potencia' };
+  const units  = { V: 'V', I: 'A', R: 'Ω', P: 'W' };
+  const vals   = { V, I, R, P };
+  const mainVal = vals[ohmCalc];
+  const mainUnit = units[ohmCalc];
+
+  document.getElementById('ohm-main').textContent =
+    `${labels[ohmCalc]} = ${mainVal !== null ? mainVal.toPrecision(4) : '—'} ${mainUnit}`;
+
+  const gridItems = ['V','I','R','P'].map(k => {
+    const v = vals[k];
+    const display = v !== null ? v.toPrecision(4) + ' ' + units[k] : '—';
+    return `<div class="result-item">
+      <div class="ri-label">${labels[k]}</div>
+      <div class="ri-val">${display}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('ohm-grid').innerHTML = gridItems;
+  showResult('ohm-result');
+}
+
+/* ---------------------------------------------------------------
+   Calculadora 3: Resistencia para LED
+--------------------------------------------------------------- */
+function setVf(v) {
+  document.getElementById('led-vf').value = v;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('led-if').addEventListener('input', function() {
+    const val = parseFloat(this.value);
+    const warn = document.getElementById('led-warn-if');
+    warn.style.display = (val > 30) ? 'block' : 'none';
+  });
+});
+
+function calcLed() {
+  clearError('led-error');
+  hideResult('led-result');
+
+  const vcc = getPositive('led-vcc', null);
+  const vf  = getPositive('led-vf',  null);
+  const ifRaw = parseFloat(document.getElementById('led-if').value);
+
+  if (!vcc) return showError('led-error', 'Ingresa un voltaje de alimentación (Vcc) mayor a 0.');
+  if (vf === null || isNaN(vf) || vf <= 0) return showError('led-error', 'Ingresa el voltaje forward del LED (Vf).');
+  if (isNaN(ifRaw) || ifRaw <= 0) return showError('led-error', 'Ingresa una corriente mayor a 0 mA.');
+
+  if (vcc <= vf) return showError('led-error', 'Vcc debe ser mayor que Vf para que el LED encienda.');
+
+  const ifA = ifRaw / 1000; // mA -> A
+  const R = (vcc - vf) / ifA;
+  const pot_mW = ifA * ifA * R * 1000; // mW
+  const e24 = nearestE24(R);
+  const errPct = (Math.abs(e24.val - R) / R * 100).toFixed(1);
+
+  document.getElementById('led-r-exacta').textContent =
+    `R = ${fmtOhm(R)} (exacta: ${R.toPrecision(4)} Ω)`;
+  document.getElementById('led-r-e24').innerHTML =
+    `Valor comercial E24 más cercano: <span class="e24-val">${e24.label}</span> (diferencia: ${errPct}%)`;
+  document.getElementById('led-potencia').textContent =
+    `Potencia en la resistencia: ${pot_mW.toPrecision(3)} mW`;
+
+  const potWarn = document.getElementById('led-warn-pot');
+  potWarn.style.display = pot_mW > 250 ? 'block' : 'none';
+
+  document.getElementById('led-explain').innerHTML =
+    `Con Vcc=${vcc}V y Vf=${vf}V, la resistencia debe absorber <strong>${(vcc - vf).toPrecision(3)} V</strong>.<br>` +
+    `Para una corriente de ${ifRaw}mA: R = ${(vcc - vf).toPrecision(3)}V / ${ifRaw}mA = <strong>${fmtOhm(R)}</strong>.<br>` +
+    `<span style="color:#7080a0;font-size:0.8rem">Usa ${e24.label} de la serie E24 (${errPct}% de diferencia).</span>`;
+
+  showResult('led-result');
+}
+
+/* ---------------------------------------------------------------
+   Inicialización
+--------------------------------------------------------------- */
+renderOhmInputs();
+
+// Smooth scroll para nav links
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.nav-links a').forEach(x => x.classList.remove('active'));
+    a.classList.add('active');
+  });
+});
+
+// Highlight nav on scroll
+const sections = ['divisor','ohm','led'];
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec && window.scrollY >= sec.offsetTop - 120) current = id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
