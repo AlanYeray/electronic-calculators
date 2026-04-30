@@ -31,7 +31,7 @@ Calculadoras/
 
 ## Desarrollo
 
-Abre `index.html` directamente en el navegador. No hay build, no hay servidor, no hay dependencias que instalar.
+Abre `index.html` directamente en el navegador. No hay build, no hay dependencias que instalar.
 
 No existen comandos de lint, test ni build.
 
