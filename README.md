@@ -2,6 +2,8 @@
 
 Sitio web estático de calculadoras de electrónica, completamente en español. Sin frameworks, sin dependencias, sin proceso de build — solo HTML, CSS y JavaScript vanilla.
 
+https://electrocalc.uk/
+
 ## Calculadoras incluidas
 
 ### Divisor de Voltaje
