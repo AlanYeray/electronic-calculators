@@ -25,9 +25,9 @@ All three calculators follow the same pattern:
 
 **Divisor de Voltaje** — Inputs support unit selectors (V/mV, Ω/kΩ/MΩ). Formula: `Vout = Vin × R2 / (R1 + R2)`.
 
-**Ley de Ohm** — Dynamic inputs rendered by `renderOhmInputs()` based on `ohmCalc` state (`'V'|'I'|'R'|'P'`). Mode is switched by `setOhmCalc()`. Always derives all four quantities (V, I, R, P) and displays them in a 2×2 grid.
+**Ley de Ohm** — Dynamic inputs rendered by `renderOhmInputs()` based on `ohmCalc` state (`'V'|'I'|'R'|'P'`). Mode is switched by `setOhmCalc()`. Always derives all four quantities (V, I, R, P) and displays them in a 2×2 grid. The `ohmInputDefs` object maps each mode to the two input field definitions it needs — add a new entry there when adding a new mode.
 
-**Resistencia para LED** — Color preset buttons call `setVf(v)`. Includes E24 series nearest-value lookup (`nearestE24(ohms)` using the `E24` constant array). Shows safety warnings for `If > 30mA` and resistor power `> 250mW`.
+**Resistencia para LED** — Color preset buttons call `setVf(v)`. Includes E24 series nearest-value lookup (`nearestE24(ohms)` using the `E24` constant array). Shows safety warnings for `If > 30mA` and resistor power `> 250mW`. Note: `#led-warn-if` is always present in the DOM (outside the result box) and is shown/hidden by an `input` event listener on `#led-if`, not by `calcLed()`.
 
 ## Key Helpers
 
@@ -44,14 +44,19 @@ All three calculators follow the same pattern:
 Defined on `:root` — change these to retheme the entire site:
 
 ```
---bg-dark   #1a1a2e   Page background
---bg-card   #16213e   Calculator card background
---bg-input  #0f3460   Input field background
---accent    #00d4ff   Primary highlight color
---error     #ff4d4d   Error messages
---warn      #ffd700   Warning messages
---success   #00ff99   E24 result highlight
+--bg-dark    #1a1a2e   Page background
+--bg-card    #16213e   Calculator card background
+--bg-input   #0f3460   Input field background
+--accent     #00d4ff   Primary highlight color
+--accent-dim #0098b8   Hover state for accent elements
+--error      #ff4d4d   Error messages
+--warn       #ffd700   Warning messages
+--success    #00ff99   E24 result highlight
 ```
+
+## Initialization Order
+
+`renderOhmInputs()` is called directly at script parse time (end of `<body>`), not inside `DOMContentLoaded`. The only `DOMContentLoaded` listener is the LED current-warning input handler. Keep this distinction when adding new initialization code.
 
 ## Extending the Site
 
